@@ -1,13 +1,13 @@
 {
     "mongoHost"     : "127.0.0.1",
-    "graphsDatabase": "may2016_isil",
+    "graphsDatabase": "aspt",
     "graph1Datasets": [{
-        "key": "twitter_isil_36_nodelink", "name": "Twitter ISIL 36"
+        "key": "coauthors_nodelink", "name": "ASPT Author Network"
     }, {
-        "key": "twitter_isil_36", "name": "Some other Twitter"
+        "key": "coauthors_nodelink", "name": "ASPT Author Network"
     }],
-    "graph2Datasets": ["twitter_isil_36_nodelink"],
+    "graph2Datasets": ["coauthors_nodelink"],
     "loggingUrl"    : "http://172.16.1.100",
-    "toolVersion"   : "1.0.0",
+    "toolVersion"   : "1.0.5",
     "sendLogs"      : false
 }

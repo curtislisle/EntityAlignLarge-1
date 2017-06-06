@@ -67,7 +67,7 @@ function logSystemActivity (group, element, activityEnum, action, tags) {
       element: element
     }
   };
-  log(msg);
+  //log(msg);
 }
 
 /* Check if an entity is in both graphs based on its key (its mongo id).  Both
@@ -648,10 +648,10 @@ function firstTimeInitialize () {
     data: entityAlign.pairings,
     columns: [{
       field: 'twitter',
-      title: 'Twitter Username'
+      title: 'Graph A Name'
     }, {
       field: 'instagram',
-      title: 'Instagram Username'
+      title: 'Graph B Name'
     }]
   });
 }
@@ -660,6 +660,8 @@ function firstTimeInitialize () {
 
 window.onload = function () {
   firstTimeInitialize();    // Fill out the dataset selectors with graph datasets that we can choose from
+  // force lineup to display immediately
+  InitializeLineUpAroundEntity('foobar')
   $('#ga-name').keyup(function (event) {
     if (event.which === 13) {
       $('.ui-menu-item').closest('.ui-autocomplete').hide();

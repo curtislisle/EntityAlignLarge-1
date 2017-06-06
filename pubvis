@@ -23,8 +23,8 @@ port=$2
 
 if [ -z "${hostname}" ]; then
     # If both are missing, they both receive the default values.
-    port=8080
-    hostname=localhost
+    port=8081
+    hostname=0.0.0.0
 elif [ -z "${port}" ]; then
     # If the "port" argument is missing, then assume the "hostname" argument is
     # actually the port.

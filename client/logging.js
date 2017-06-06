@@ -3,7 +3,7 @@
     // send the message
 function log(msg) {
     //msg = extend(defaultMsg, msg);
-    ale2.log(msg);
+    //ale2.log(msg);
 }
 
 function logCliqueNodeDrag() {

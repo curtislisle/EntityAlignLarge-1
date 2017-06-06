@@ -2,14 +2,15 @@ import json
 from pymongo import MongoClient
 
 
-translate = {"apriori": "Self reported match",
-             "entity": "Username",
-             "lsgm":"lsgm",
-             "lev": "Username similarity",
-             "substring": "Username substring match",
-             "2hop": "2-hop neighborhood size similarity",
-             "1hop": "1-hop neighborhood size similarity",
-             "2spectral": "2-hop neighborhood structural similarity"}
+translate = {"aspt_member": "ASPT",
+             "full_name": "Name",
+             "gender":"Gender",
+             "percentage_female": "% Female",
+             "numberOfCoAuthors": "Co-authors",
+             "OneHopSize": " Connections",
+             "betweenness": "Betweenness",
+             "totalPublications" : "Total Pubs",
+             "role": "Office"}
 
 def run(host,database,graphA,graphB,handle,displaymode):
     # Create an empty response object.
@@ -21,9 +22,9 @@ def run(host,database,graphA,graphB,handle,displaymode):
     # with 'seeds_') or the matching seeds.
     
     # build topk collection name from 
-    topk_collection_name = 'topk_'+graphA+'_'+graphB
+    topk_collection_name = 'authors5'
     #topk_collection_name = 'topk_twitter_geosample_mentions_v2_october_combined_instagram_mentions_nodelink_october'
-    print 'looking for topk in collection', topk_collection_name
+    print 'looking for lineup data in collection', topk_collection_name
     #topk_collection_name = 'topk'
 
     client = MongoClient(host, 27017)
@@ -31,10 +32,11 @@ def run(host,database,graphA,graphB,handle,displaymode):
     topk_collection = db[topk_collection_name]
 
     # get a list of all collections (excluding system collections)
-    query = {'ga':handle}
+    #query = {'aspt_member':1}
+    query = {}
     tablerows = []
     # return only the columns to potentially display in LineUp.  We don't want to return the gA entity we used to search by
-    topk = topk_collection.find(query,{'_id':0,'ga':0})
+    topk = topk_collection.find(query,{'_id':0})
     for row in topk:
         newrow = json.loads(json.dumps(row))
         for k in row:
