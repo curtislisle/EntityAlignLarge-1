@@ -132,6 +132,7 @@
     </div>
   </div>
 
+<!--
   <div id='video-panel' class="modal fade draper" data-wf="1"  data-description="intro video">
     <div class=modal-dialog>
       <div class=modal-content>
@@ -147,6 +148,8 @@
       </div>
     </div>
   </div>
+-->
+
 
   <div id='seed-panel' class="modal fade draper" data-wf="1"  data-description="list seeds">
     <div class=modal-dialog>
@@ -200,9 +203,24 @@
         <text class="leftindent">matched nodes</text>    
         <p></p>
         -->
-        <input id='ga-name' class="leftindent" disabled="disabled"> Enter an entity name</input> 
+        <input id='ga-name' class="leftindent" disabled="disabled">Search name</input> 
         <p></p>
         <a id='onehop-button' class="btn btn-default leftindent" style="margin-top: 10px">Explore local network</a>
+
+        <select id='officer-selector' class='form-control leftindent' style="margin-top: 50px">
+          <option selected disabled hidden value=''>Select among sets of roles</option>
+          <option value='President'>President</option>
+          <option value='Cooley'>Cooley</option>
+          <option value='Raven'>Raven</option>
+          <option value='SBM Issues Comm'>SBM Issues Comm</option>
+          <option value='SB EIC'>SB EIC</option>
+          <option value='SB Assoc Editor'>SB Assoc Editor</option>
+          <option value='Nominations Comm Chair'>Nominations Comm Chair</option>     
+          <option value='Asa Gray'>Asa Gray</option>      
+        </select>
+
+        <a id='officer-button' class="btn btn-default leftindent" style="margin-top: 10px">Explore role network</a>
+
        
         <p></p>
         <div class="clique">

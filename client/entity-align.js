@@ -33,7 +33,8 @@ var defaultCola = {
     return d.data && d.data.profile_image ? '2px' : '1px';
   },
   fill: function (d) {
-    return d.data && d.data.profile_image ? 'blue' : 'green';
+    //return d.data && d.data.profile_image ? 'blue' : 'green';
+    return d.data && (d.data.gender == 'female') ? 'red' : 'green';
   },
   labelBackgroundColor: function (d) {
     return (entityAlign.inBothGraphs && entityAlign.inBothGraphs(
@@ -496,6 +497,51 @@ function initGraph2WithClique () {
   });
 }
 
+function loadOfficerGraph () {
+
+  'use strict';
+
+  var selectedDataset = $('#graph1-selector').val();
+  var selectedOffice = $('#officer-selector').val();
+  console.log('exploring officer network for office:', selectedOffice)
+
+  // logSystemActivity('Kitware entityAlign - '+logText);
+
+  var graph = createCliqueGraph(selectedDataset, entityAlign.graph1, '#graph1',
+                                '#info1');
+  entityAlign.graph1 = graph;
+
+   $.ajax({
+    // generalized collection definition
+    url: 'service/loadByOffice/' + selectedOffice,
+
+    success: function (responseString) {
+      var response = JSON.parse(responseString)
+      if (response.error) {
+        console.log('error: ' + response.error);
+        return;
+      }
+
+      console.log('data returned:', response.result);
+      for (var nameIndex in response.result.names) {
+        var nameReturned = response.result.names[nameIndex]
+        graph.graph.adapter.findNode({name: nameReturned}).then(function (center) {
+          //console.log('center:', center);
+          if (center) {
+            graph.graph.addNode(center);
+            addNeighborhood(graph, center);
+          }
+        });
+    }
+
+    } 
+  });
+
+  
+  
+}
+
+
 function publishPairLists () {
   logPublishPairings();
   console.log('publishing');
@@ -624,17 +670,21 @@ function firstTimeInitialize () {
             .on('change', handleLineUpSelectorChange);
     d3.select('#onehop-button')
             .on('click', ExploreLocalGraphAregion);
-    d3.select('#accept-button')
-            .on('click', acceptListedPairing);
+
+    d3.select('#officer-button')
+            .on('click', loadOfficerGraph);
+    /**
     d3.select('#graph1-homepage')
             .on('click', openHompageGraph1);
     d3.select('#graph2-homepage')
             .on('click', openHompageGraph2);
+    **/
 
     setGraphDatasets(defaults.graph1Datasets || ['twitter'], '#graph1-selector', '#graph1-selector-one');
     setGraphDatasets(defaults.graph2Datasets || ['instagram'], '#graph2-selector', '#graph2-selector-one');
     updateGraph1();
     updateGraph2();
+
   });
 
   d3.select('#publish-parings-button')
@@ -654,12 +704,14 @@ function firstTimeInitialize () {
       title: 'Graph B Name'
     }]
   });
+
 }
 
 // *** initialization.
 
 window.onload = function () {
   firstTimeInitialize();    // Fill out the dataset selectors with graph datasets that we can choose from
+  //fillRoleSelector('#officer-selector');
   // force lineup to display immediately
   InitializeLineUpAroundEntity('foobar')
   $('#ga-name').keyup(function (event) {
@@ -684,6 +736,20 @@ function fillSeedList (element) {
             .text(function (d) { return d; });
   });
 }
+
+// use a python service to search the datastore and return a list of available seed arrays to pick from.  This fills a GUI selector, so the user
+// can see what datasets are available.
+
+function fillRoleSelector (element) {
+  //d3.select(element).selectAll('a').remove();
+  d3.json('service/loadRoles/', function (ignore_err, result) {
+  d3.select(element).selectAll('option')
+            .data(result.roles)
+            .enter().append('option')
+            .text(function (d) { return d; });
+  });
+}
+
 
 function InitializeLineUpAroundEntity (handle) {
   logSetupLineUp();
@@ -743,8 +809,10 @@ function ExploreLocalGraphAregion (action, centralHandle) {
   InitializeLineUpAroundEntity(centralHandle);
   // clear possible leftover state from a previous search
   document.getElementById('gb-name').value = '';
-  emptyCliqueGraph(entityAlign.graph2);
+  //emptyCliqueGraph(entityAlign.graph2);
 }
+
+
 
 /* After an entity is selected to be centered, set the control to that entity's
  * name.  Select the entity in lineup if present.
